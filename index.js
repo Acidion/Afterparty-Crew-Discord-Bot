@@ -19,12 +19,18 @@ client.on('ready', () => {
 //function that will run the checks
 var Check = new CronJob(config.cron,async function () {
     const tempData = JSON.parse(fs.readFileSync('./config.json'))
+    
+    console.log("Printing tempData:");
+    console.log(JSON.stringify(tempData, null, 4);
 
     tempData.channels.map(async function (chan, i) {
         if (!chan.ChannelName) return;
         
         let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
-        if (StreamData.data.length == 0) return
+        if (StreamData.data.length == 0) {
+            console.log("No Streamdata Returned");
+            return;
+        }
 
         StreamData = StreamData.data[0]
 
@@ -71,6 +77,9 @@ var Check = new CronJob(config.cron,async function () {
                 "url": `${ChannelData.thumbnail_url}`
             }
         }
+        
+        console.log("Printing Streamdata:")
+        console.log(JSON.stringify(SendEmbed, null, 4);
 
         //get the assigned channel
         const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
@@ -94,7 +103,7 @@ var Check = new CronJob(config.cron,async function () {
             })
         }
         //save config with new data
-        fs.writeFileSync('./config.json', JSON.stringify(tempData))
+        fs.writeFileSync('./config.json', JSON.stringify(tempData, null, 4))
     })
 });
 
@@ -105,7 +114,9 @@ var updateAuth = new CronJob('0 * * * *', async function () {
 
 //get a new authorization key and update the config
 async function UpdateAuthConfig(){
-    let tempData = JSON.parse(fs.readFileSync('./config.json'));
+    let 
+    
+    = JSON.parse(fs.readFileSync('./config.json'));
 
     //get the auth key
     const authKey = await Auth.getKey(tempData.twitch_clientID, tempData.twitch_secret);
@@ -114,7 +125,7 @@ async function UpdateAuthConfig(){
     //write the new auth key
     var tempConfig = JSON.parse(fs.readFileSync('./config.json'));
     tempConfig.authToken = authKey;
-    fs.writeFileSync('./config.json', JSON.stringify(tempConfig));
+    fs.writeFileSync('./config.json', JSON.stringify(tempConfig, null, 4));
 }
 
 //start the timers
