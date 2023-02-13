@@ -37,6 +37,10 @@ var Check = new CronJob(config.cron,async function () {
         //get the channel data for the thumbnail image
         const ChannelData = await Channel.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken)
         if (!ChannelData) return;
+        
+        if (StreamData.game_name === "" || StreamData.game_name == null){
+            StreamData.game_name = "Music"
+        }
 
         //structure for the embed
         var SendEmbed = {
