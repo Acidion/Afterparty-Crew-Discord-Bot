@@ -114,9 +114,7 @@ var updateAuth = new CronJob('0 * * * *', async function () {
 
 //get a new authorization key and update the config
 async function UpdateAuthConfig(){
-    let 
-    
-    = JSON.parse(fs.readFileSync('./config.json'));
+    let tempData = JSON.parse(fs.readFileSync('./config.json'));
 
     //get the auth key
     const authKey = await Auth.getKey(tempData.twitch_clientID, tempData.twitch_secret);
