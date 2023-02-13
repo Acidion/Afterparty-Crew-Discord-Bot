@@ -21,7 +21,7 @@ var Check = new CronJob(config.cron,async function () {
     const tempData = JSON.parse(fs.readFileSync('./config.json'))
     
     console.log("Printing tempData:");
-    console.log(JSON.stringify(tempData, null, 4);
+    console.log(JSON.stringify(tempData, null, 4));
 
     tempData.channels.map(async function (chan, i) {
         if (!chan.ChannelName) return;
@@ -79,7 +79,7 @@ var Check = new CronJob(config.cron,async function () {
         }
         
         console.log("Printing Streamdata:")
-        console.log(JSON.stringify(SendEmbed, null, 4);
+        console.log(JSON.stringify(SendEmbed, null, 4));
 
         //get the assigned channel
         const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
