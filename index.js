@@ -27,10 +27,6 @@ var Check = new CronJob(config.cron,async function () {
         if (!chan.ChannelName) return;
         
         let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
-        if (StreamData.data.length == 0) {
-            console.log("No Streamdata Returned");
-            return;
-        }
 
         StreamData = StreamData.data[0]
 
@@ -82,9 +78,6 @@ var Check = new CronJob(config.cron,async function () {
             }
         }
         
-        console.log("Printing Streamdata:")
-        console.log(JSON.stringify(SendEmbed, null, 4));
-
         //get the assigned channel
         const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
 
