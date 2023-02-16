@@ -20,9 +20,6 @@ client.on('ready', () => {
 var Check = new CronJob(config.cron,async function () {
     const tempData = JSON.parse(fs.readFileSync('./config.json'))
     
-    console.log("Printing tempData:");
-    console.log(JSON.stringify(tempData, null, 4));
-
     tempData.channels.map(async function (chan, i) {
         if (!chan.ChannelName) return;
         
