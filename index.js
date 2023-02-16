@@ -42,7 +42,7 @@ var Check = new CronJob(config.cron,async function () {
 
         //structure for the embed
         var SendEmbed = {
-            "title": `🔴 ${StreamData.user_name} is now live`,
+            "title": `:red_circle: ${StreamData.user_name} is now live`,
             "description": StreamData.title,
             "url": `https://www.twitch.tv/${StreamData.user_login}`,
             "color": 6570404,
