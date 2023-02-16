@@ -28,6 +28,11 @@ var Check = new CronJob(config.cron,async function () {
         
         let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
 
+        if (StreamData.data.length == 0) {
+            console.log("No Streamdata Returned");
+            return;
+        }
+        
         StreamData = StreamData.data[0]
 
         //get the channel data for the thumbnail image
