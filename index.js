@@ -34,8 +34,23 @@ var Check = new CronJob(config.cron,async function () {
 
         //get the channel data for the thumbnail image
         const ChannelData = await Channel.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken)
-        if (!ChannelData) return;
         
+        //get the assigned channel
+        const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
+        
+        if (!ChannelData) {
+            if (chan.discord_message_id) {
+                sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
+                    //update the title, game, viewer_count and the thumbnail
+                    msg.delete()
+                    .then(msg => console.log(`Deleted Go Live message from ${chan.ChannelName}`))
+                    .catch(console.error);
+                });
+                chan.discord_message_id = ""
+            }
+            return
+        }
+            
         if (StreamData.game_name === "" || StreamData.game_name == null){
             StreamData.game_name = "Music"
         }
