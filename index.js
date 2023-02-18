@@ -100,9 +100,6 @@ var Check = new CronJob(config.cron,async function () {
                 "url": `${ChannelData.thumbnail_url}`
             }
         }
-        
-        //get the assigned channel
-        const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
 
         if (chan.twitch_stream_id == StreamData.id) {
             sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
