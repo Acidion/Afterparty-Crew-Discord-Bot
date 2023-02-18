@@ -39,10 +39,16 @@ var Check = new CronJob(config.cron,async function () {
         if (StreamData.game_name === "" || StreamData.game_name == null){
             StreamData.game_name = "Music"
         }
+        
+        var titleString = ":red_circle: " + StreamData.user_name + " is now live";
+        
+        if (chan.go_live_message) {
+            titleString = chan.go_live_message
+        }
 
         //structure for the embed
         var SendEmbed = {
-            "title": `:red_circle: ${StreamData.user_name} is now live`,
+            "title": titleString,
             "description": StreamData.title,
             "url": `https://www.twitch.tv/${StreamData.user_login}`,
             "color": 6570404,
