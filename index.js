@@ -29,17 +29,13 @@ var Check = new CronJob(config.cron,async function () {
         let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
 
         if (StreamData.data.length == 0) {
-            console.log("No Streamdata Returned for " + chan.ChannelName);
             if (chan.discord_message_id) {
-                console.log("Discord message id: " + chan.discord_message_id)
                 sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
                     //update the title, game, viewer_count and the thumbnail
                     msg.delete()
-                    .then(msg => console.log(`Deleted Go Live message from ${chan.ChannelName}`))
+                    .then(msg => console.log(chan.ChannelName + " has gone offline, deleting discord message: " + chan.discord_message_id))
                     .catch(console.error);
-                    console.log(msg)
                 });
-                console.log("Resetting discord Message ID")
                 tempData.channels[i].discord_message_id = ""
                 fs.writeFileSync('./config.json', JSON.stringify(tempData, null, 4))
             }
