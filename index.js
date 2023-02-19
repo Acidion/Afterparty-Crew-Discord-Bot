@@ -23,23 +23,13 @@ var Check = new CronJob(config.cron,async function () {
     tempData.channels.map(async function (chan, i) {
         if (!chan.ChannelName) return;
         
-        let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
-
-        if (StreamData.data.length == 0) {
-            console.log("No Streamdata Returned");
-            return;
-        }
-        
-        StreamData = StreamData.data[0]
-
-        //get the channel data for the thumbnail image
-        const ChannelData = await Channel.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken)
-        
         //get the assigned channel
         const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
         
-        if (!ChannelData) {
-            console.log(chan.ChannelName + " does not have ChannelData")
+        let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
+
+        if (StreamData.data.length == 0) {
+            console.log("No Streamdata Returned for " + chan.ChannelName);
             if (chan.discord_message_id) {
                 console.log("Discord message id: " + chan.discord_message_id)
                 sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
@@ -52,8 +42,15 @@ var Check = new CronJob(config.cron,async function () {
                 console.log("Resetting discord Message ID")
                 chan.discord_message_id = ""
             }
-            return
+            return;
         }
+        
+        StreamData = StreamData.data[0]
+
+        //get the channel data for the thumbnail image
+        const ChannelData = await Channel.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken)
+        
+        if (!ChannelData)return
             
         if (StreamData.game_name === "" || StreamData.game_name == null){
             StreamData.game_name = "Music"
