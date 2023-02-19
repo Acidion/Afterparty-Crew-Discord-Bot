@@ -40,7 +40,8 @@ var Check = new CronJob(config.cron,async function () {
                     console.log(msg)
                 });
                 console.log("Resetting discord Message ID")
-                chan.discord_message_id = ""
+                tempData.channels[i].discord_message_id = ""
+                fs.writeFileSync('./config.json', JSON.stringify(tempData, null, 4))
             }
             return;
         }
