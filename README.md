@@ -11,7 +11,7 @@ This Discord bot uses [The Official Twitch Api](https://dev.twitch.tv/docs/api/)
 # Installation
 First you will have to clone the project.
 ```console
-$ git clone https://github.com/Siddhart/Twitch-Discord-Bot
+$ git clone https://github.com/Acidion/Afterparty-Crew-Discord-Bot
 ```
 
 After that open the config.json file
