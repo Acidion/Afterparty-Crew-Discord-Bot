@@ -39,13 +39,17 @@ var Check = new CronJob(config.cron,async function () {
         const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
         
         if (!ChannelData) {
+            console.log(chan.ChannelName + " does not have ChannelData")
             if (chan.discord_message_id) {
+                console.log("Discord message id: " + chan.discord_message_id)
                 sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
                     //update the title, game, viewer_count and the thumbnail
                     msg.delete()
                     .then(msg => console.log(`Deleted Go Live message from ${chan.ChannelName}`))
                     .catch(console.error);
+                    console.log(msg)
                 });
+                console.log("Resetting discord Message ID")
                 chan.discord_message_id = ""
             }
             return
