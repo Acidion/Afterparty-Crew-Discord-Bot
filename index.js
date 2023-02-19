@@ -23,10 +23,22 @@ var Check = new CronJob(config.cron,async function () {
     tempData.channels.map(async function (chan, i) {
         if (!chan.ChannelName) return;
         
+        //get the assigned channel
+        const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
+        
         let StreamData = await Stream.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken);
 
         if (StreamData.data.length == 0) {
-            console.log("No Streamdata Returned");
+            if (chan.discord_message_id) {
+                sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
+                    //update the title, game, viewer_count and the thumbnail
+                    msg.delete()
+                    .then(msg => console.log(chan.ChannelName + " has gone offline, deleting discord message: " + chan.discord_message_id))
+                    .catch(console.error);
+                });
+                tempData.channels[i].discord_message_id = ""
+                fs.writeFileSync('./config.json', JSON.stringify(tempData, null, 4))
+            }
             return;
         }
         
@@ -34,8 +46,9 @@ var Check = new CronJob(config.cron,async function () {
 
         //get the channel data for the thumbnail image
         const ChannelData = await Channel.getData(chan.ChannelName, tempData.twitch_clientID, tempData.authToken)
-        if (!ChannelData) return;
         
+        if (!ChannelData)return
+            
         if (StreamData.game_name === "" || StreamData.game_name == null){
             StreamData.game_name = "Music"
         }
@@ -85,9 +98,6 @@ var Check = new CronJob(config.cron,async function () {
                 "url": `${ChannelData.thumbnail_url}`
             }
         }
-        
-        //get the assigned channel
-        const sendChannel = client.guilds.cache.get(config.DiscordServerId).channels.cache.get(config.channelID)
 
         if (chan.twitch_stream_id == StreamData.id) {
             sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
