@@ -99,7 +99,7 @@ var Check = new CronJob(config.cron,async function () {
             }
         }
 
-        if (chan.twitch_stream_id == StreamData.id) {
+        if (chan.twitch_stream_id == StreamData.id || chan.discord_message_id) {
             sendChannel.messages.fetch(chan.discord_message_id).then(msg => {
                 //update the title, game, viewer_count and the thumbnail
                 msg.edit({ embed: SendEmbed })
