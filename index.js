@@ -6,7 +6,9 @@ const fs = require('fs')
 const Stream = require("./modules/getStreams.js")
 const Auth = require("./modules/auth.js")
 const Channel = require("./modules/channelData.js")
-const config = require('./config.json')
+const configLoc = './config/config.json'
+const config = require(configLoc)
+
 
 //ready
 client.on('ready', () => {
@@ -18,7 +20,7 @@ client.on('ready', () => {
 
 //function that will run the checks
 var Check = new CronJob(config.cron,async function () {
-    const tempData = JSON.parse(fs.readFileSync('./config.json'))
+    const tempData = JSON.parse(fs.readFileSync(configLoc))
     
     tempData.channels.map(async function (chan, i) {
         if (!chan.ChannelName) return;
@@ -37,7 +39,7 @@ var Check = new CronJob(config.cron,async function () {
                     .catch(console.error);
                 });
                 tempData.channels[i].discord_message_id = ""
-                fs.writeFileSync('./config.json', JSON.stringify(tempData, null, 4))
+                fs.writeFileSync(configLoc, JSON.stringify(tempData, null, 4))
             }
             return;
         }
@@ -118,7 +120,7 @@ var Check = new CronJob(config.cron,async function () {
             })
         }
         //save config with new data
-        fs.writeFileSync('./config.json', JSON.stringify(tempData, null, 4))
+        fs.writeFileSync(configLoc, JSON.stringify(tempData, null, 4))
     })
 });
 
@@ -129,16 +131,16 @@ var updateAuth = new CronJob('0 * * * *', async function () {
 
 //get a new authorization key and update the config
 async function UpdateAuthConfig(){
-    let tempData = JSON.parse(fs.readFileSync('./config.json'));
+    let tempData = JSON.parse(fs.readFileSync(configLoc));
 
     //get the auth key
     const authKey = await Auth.getKey(tempData.twitch_clientID, tempData.twitch_secret);
     if (!authKey) return;
 
     //write the new auth key
-    var tempConfig = JSON.parse(fs.readFileSync('./config.json'));
+    var tempConfig = JSON.parse(fs.readFileSync(configLoc));
     tempConfig.authToken = authKey;
-    fs.writeFileSync('./config.json', JSON.stringify(tempConfig, null, 4));
+    fs.writeFileSync(configLoc, JSON.stringify(tempConfig, null, 4));
 }
 
 //start the timers
