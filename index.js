@@ -8,7 +8,9 @@ const Auth = require("./modules/auth.js")
 const Channel = require("./modules/channelData.js")
 const configLoc = './config/config.json'
 const config = require(configLoc)
-
+const http = require("http")
+const host = '0.0.0.0' // Change to whatever you'd like
+const port = 8080 // Change to whatever you'd like
 
 //ready
 client.on('ready', () => {
@@ -149,3 +151,17 @@ Check.start();
 
 //login
 client.login(config.token);
+
+// Define server response here
+const requestListener = function(req, res) {
+    res.writeHead(200);
+    res.end("Hallo, de robot leeft.");
+}
+
+// start the http server
+
+const server - http.createServer(requestListener);
+server.listen(port, host, () => {
+    console.log('Server is running on http://${host}:${{port}');
+});
+
