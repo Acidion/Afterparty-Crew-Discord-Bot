@@ -9,7 +9,6 @@ const Channel = require("./modules/channelData.js")
 const configLoc = './config/config.json'
 const config = require(configLoc)
 const http = require("http")
-const https = require("https")
 const host = '0.0.0.0' // Change to whatever you'd like
 const port = 8080 // Change to whatever you'd like
 
@@ -152,7 +151,7 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
 
 
     if (statusURL) {
-        const req = https.request(options, (res) => {
+        const req = http.request(options, (res) => {
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
                 console.log(`BODY: ${chunk}`);
