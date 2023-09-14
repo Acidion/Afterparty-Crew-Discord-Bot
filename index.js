@@ -135,7 +135,7 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
     const statusURL = config.statusPostURL;
 
     const postData = JSON.stringify({
-        'content': config.botName, 'time' : Date.UTC()
+        'content': config.botName, 'time' : Date.now()
     });
 
     const options ={
