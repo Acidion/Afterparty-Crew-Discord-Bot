@@ -144,7 +144,7 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
         path: config.statusPath,
         method: 'POST',
         headers: {
-            'Content-Type' : 'application/text, application/json',
+            'Content-Type' : 'application/json',
             'Content-Length': Buffer.byteLength(postData),
         },
     };
