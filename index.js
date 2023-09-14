@@ -140,18 +140,20 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
 
     const options ={
         hostname: statusURL,
-        method: 'POST',
         port: config.statusPort,
         path: config.statusPath,
+        method: 'POST',
         headers: {
             'Content-Type' : 'application/text, application/json',
             'Content-Length': Buffer.byteLength(postData),
         },
     };
 
+    console.log(`Port that we're trying to hit ${options.port}`);
+
     if (statusURL) {
         const req = http.request(options, (res) => {
-            console.log(`STATUS: $res.statusCode}`);
+            console.log(`STATUS: ${res.statusCode}`);
             console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
