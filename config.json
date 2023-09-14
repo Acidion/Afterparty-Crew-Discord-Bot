@@ -9,6 +9,8 @@
     "roleID": "ROLE_ID(NOT REQUIRED)",
     "botName": "discordbot",
     "statusPostURL": "",
+    "statusPort": 9292,
+    "statusPath": "/webhook",
     "channels": [
         {
             "ChannelName": "STREAMER_NAME(REQUIRED)",
