@@ -7,6 +7,7 @@
     "channelID": "CHANNELD_ID(REQUIRED)",
     "roleID": "ROLE_ID(NOT REQUIRED)",
     "botName": "discordbot",
+    "statusPostURL": "",
     "channels": [
         {
             "ChannelName": "STREAMER_NAME(REQUIRED)",
