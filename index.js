@@ -143,7 +143,7 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
            console.log(body); 
         });
     }
-}
+});
 
 //get a new authorization key and update the config
 async function UpdateAuthConfig(){
