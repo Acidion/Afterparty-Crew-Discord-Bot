@@ -21,7 +21,7 @@ client.on('ready', () => {
 });
 
 //function that will run the checks
-var Check = new CronJob(config.cron,async function () {
+var Check = new CronJob(config.cronCheck,async function () {
     const tempData = JSON.parse(fs.readFileSync(configLoc))
     
     tempData.channels.map(async function (chan, i) {
@@ -131,6 +131,20 @@ var updateAuth = new CronJob('0 * * * *', async function () {
     UpdateAuthConfig()
 });
 
+var statusCheck = new CronJob(config.cronStatus,async function () {
+    const statusURL = config.statusPostURL;
+
+    if (statusURL) {
+        rl = requests.post({
+            headers: {'content-type' : 'application/text, application/json'},
+            url: statusURL,
+            json: {"content": config.botName, "time" : Date.now()}
+        }, function(error, response, body){
+           console.log(body); 
+        });
+    }
+}
+
 //get a new authorization key and update the config
 async function UpdateAuthConfig(){
     let tempData = JSON.parse(fs.readFileSync(configLoc));
@@ -148,6 +162,7 @@ async function UpdateAuthConfig(){
 //start the timers
 updateAuth.start()
 Check.start();
+statusCheck.start();
 
 //login
 client.login(config.token);
