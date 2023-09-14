@@ -134,14 +134,39 @@ var updateAuth = new CronJob('0 * * * *', async function () {
 var statusCheck = new CronJob(config.cronStatus,async function () {
     const statusURL = config.statusPostURL;
 
+    const postData = JSON.stringify({
+        'content': config.botName, 'time' : Date.now()
+    });
+
+    const options ={
+        hostname: statusURL,
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/text, application/json',
+            'Content-Length': Buffer.byteLength(postData),
+        },
+    };
+
     if (statusURL) {
-        rl = requests.post({
-            headers: {'content-type' : 'application/text, application/json'},
-            url: statusURL,
-            json: {"content": config.botName, "time" : Date.now()}
-        }, function(error, response, body){
-           console.log(body); 
+        const req = http.request(options, (res) => {
+            console.log(`STATUS: $res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log(`BODY: ${chunk}`);
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+            });
         });
+
+        req.on('error', (e) => {
+            console.error(`problem with request: ${e.message}`);
+        });
+
+        // Write data to request body
+        req.write(postData);
+        req.end();
     }
 });
 
