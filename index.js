@@ -141,6 +141,8 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
     const options ={
         hostname: statusURL,
         method: 'POST',
+        port: config.statusPort,
+        path: config.statusPath,
         headers: {
             'Content-Type' : 'application/text, application/json',
             'Content-Length': Buffer.byteLength(postData),
