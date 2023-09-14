@@ -6,6 +6,7 @@
     "cron": "*/10 * * * *",
     "channelID": "CHANNELD_ID(REQUIRED)",
     "roleID": "ROLE_ID(NOT REQUIRED)",
+    "botName": "discordbot",
     "channels": [
         {
             "ChannelName": "STREAMER_NAME(REQUIRED)",
