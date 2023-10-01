@@ -8,7 +8,7 @@ const Auth = require("./modules/auth.js")
 const Channel = require("./modules/channelData.js")
 const configLoc = './config/config.json'
 const config = require(configLoc)
-const http = require("http")
+const https = require("https")
 const host = '0.0.0.0' // Change to whatever you'd like
 const port = 8080 // Change to whatever you'd like
 
@@ -151,7 +151,7 @@ var statusCheck = new CronJob(config.cronStatus,async function () {
 
 
     if (statusURL) {
-        const req = http.request(options, (res) => {
+        const req = https.request(options, (res) => {
             res.setEncoding('utf8');
             res.on('data', (chunk) => {
                 console.log(`BODY: ${chunk}`);
@@ -201,7 +201,7 @@ const requestListener = function(req, res) {
 
 // start the http server
 
-const server = http.createServer(requestListener);
+const server = https.createServer(requestListener);
 server.listen(port, host, () => {
     console.log(`Server is running on http://${host}:${port}`);
 });
